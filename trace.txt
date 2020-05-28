@@ -1,0 +1,67 @@
+== Info:   Trying ::1...
+== Info: TCP_NODELAY set
+== Info: Connected to localhost (::1) port 80 (#0)
+=> Send header, 163 bytes (0xa3)
+0000: 50 4f 53 54 20 2f 65 64 69 74 5f 67 72 6f 75 70 POST /edit_group
+0010: 2e 70 68 70 3f 69 64 3d 32 26 20 48 54 54 50 2f .php?id=2& HTTP/
+0020: 31 2e 31 0d 0a 48 6f 73 74 3a 20 6c 6f 63 61 6c 1.1..Host: local
+0030: 68 6f 73 74 0d 0a 55 73 65 72 2d 41 67 65 6e 74 host..User-Agent
+0040: 3a 20 63 75 72 6c 2f 37 2e 35 35 2e 31 0d 0a 41 : curl/7.55.1..A
+0050: 63 63 65 70 74 3a 20 2a 2f 2a 0d 0a 43 6f 6e 74 ccept: */*..Cont
+0060: 65 6e 74 2d 4c 65 6e 67 74 68 3a 20 34 38 0d 0a ent-Length: 48..
+0070: 43 6f 6e 74 65 6e 74 2d 54 79 70 65 3a 20 61 70 Content-Type: ap
+0080: 70 6c 69 63 61 74 69 6f 6e 2f 78 2d 77 77 77 2d plication/x-www-
+0090: 66 6f 72 6d 2d 75 72 6c 65 6e 63 6f 64 65 64 0d form-urlencoded.
+00a0: 0a 0d 0a                                        ...
+=> Send data, 48 bytes (0x30)
+0000: 67 72 6f 75 70 2d 6e 61 6d 65 3d 53 70 65 63 69 group-name=Speci
+0010: 61 6c 26 67 72 6f 75 70 2d 6c 65 76 65 6c 3d 32 al&group-level=2
+0020: 26 73 74 61 74 75 73 3d 30 26 75 70 64 61 74 65 &status=0&update
+== Info: upload completely sent off: 48 out of 48 bytes
+<= Recv header, 20 bytes (0x14)
+0000: 48 54 54 50 2f 31 2e 31 20 33 30 32 20 46 6f 75 HTTP/1.1 302 Fou
+0010: 6e 64 0d 0a                                     nd..
+<= Recv header, 37 bytes (0x25)
+0000: 44 61 74 65 3a 20 53 61 74 2c 20 32 33 20 4d 61 Date: Sat, 23 Ma
+0010: 79 20 32 30 32 30 20 32 33 3a 31 39 3a 35 32 20 y 2020 23:19:52 
+0020: 47 4d 54 0d 0a                                  GMT..
+<= Recv header, 56 bytes (0x38)
+0000: 53 65 72 76 65 72 3a 20 41 70 61 63 68 65 2f 32 Server: Apache/2
+0010: 2e 34 2e 34 33 20 28 57 69 6e 36 34 29 20 4f 70 .4.43 (Win64) Op
+0020: 65 6e 53 53 4c 2f 31 2e 31 2e 31 67 20 50 48 50 enSSL/1.1.1g PHP
+0030: 2f 37 2e 34 2e 36 0d 0a                         /7.4.6..
+<= Recv header, 25 bytes (0x19)
+0000: 58 2d 50 6f 77 65 72 65 64 2d 42 79 3a 20 50 48 X-Powered-By: PH
+0010: 50 2f 37 2e 34 2e 36 0d 0a                      P/7.4.6..
+<= Recv header, 58 bytes (0x3a)
+0000: 53 65 74 2d 43 6f 6f 6b 69 65 3a 20 50 48 50 53 Set-Cookie: PHPS
+0010: 45 53 53 49 44 3d 71 33 72 64 38 6b 6b 62 39 70 ESSID=q3rd8kkb9p
+0020: 37 68 6f 68 75 71 76 72 67 6f 68 33 67 6a 70 32 7hohuqvrgoh3gjp2
+0030: 3b 20 70 61 74 68 3d 2f 0d 0a                   ; path=/..
+<= Recv header, 40 bytes (0x28)
+0000: 45 78 70 69 72 65 73 3a 20 54 68 75 2c 20 31 39 Expires: Thu, 19
+0010: 20 4e 6f 76 20 31 39 38 31 20 30 38 3a 35 32 3a  Nov 1981 08:52:
+0020: 30 30 20 47 4d 54 0d 0a                         00 GMT..
+<= Recv header, 52 bytes (0x34)
+0000: 43 61 63 68 65 2d 43 6f 6e 74 72 6f 6c 3a 20 6e Cache-Control: n
+0010: 6f 2d 73 74 6f 72 65 2c 20 6e 6f 2d 63 61 63 68 o-store, no-cach
+0020: 65 2c 20 6d 75 73 74 2d 72 65 76 61 6c 69 64 61 e, must-revalida
+0030: 74 65 0d 0a                                     te..
+<= Recv header, 18 bytes (0x12)
+0000: 50 72 61 67 6d 61 3a 20 6e 6f 2d 63 61 63 68 65 Pragma: no-cache
+0010: 0d 0a                                           ..
+<= Recv header, 31 bytes (0x1f)
+0000: 4c 6f 63 61 74 69 6f 6e 3a 20 65 64 69 74 5f 67 Location: edit_g
+0010: 72 6f 75 70 2e 70 68 70 3f 69 64 3d 32 0d 0a    roup.php?id=2..
+<= Recv header, 19 bytes (0x13)
+0000: 43 6f 6e 74 65 6e 74 2d 4c 65 6e 67 74 68 3a 20 Content-Length: 
+0010: 33 0d 0a                                        3..
+<= Recv header, 40 bytes (0x28)
+0000: 43 6f 6e 74 65 6e 74 2d 54 79 70 65 3a 20 74 65 Content-Type: te
+0010: 78 74 2f 68 74 6d 6c 3b 20 63 68 61 72 73 65 74 xt/html; charset
+0020: 3d 55 54 46 2d 38 0d 0a                         =UTF-8..
+<= Recv header, 2 bytes (0x2)
+0000: 0d 0a                                           ..
+<= Recv data, 3 bytes (0x3)
+0000: 0a 0a 0a                                        ...
+== Info: Connection #0 to host localhost left intact

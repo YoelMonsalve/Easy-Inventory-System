@@ -1,0 +1,374 @@
+INSTRUCCIONES
+===============
+
+A) Introducción           |
+__________________________|
+
+Hola Ricardo, bienvenido al Sistema Inventario PHP, creado originalmente por Siamon Hassan,
+(http://oswapp.com/) y liberado bajo la licencia MIT. Vamos a tomar este sistema como nuestro 
+producto estrella y con el que nos daremos a conocer al mundo. Además, como creo que ha recibido
+poco soporte y mantenimiento, nos podemos convertir en los mantenedores no-oficiales del
+Sistema Inventario (basado en OSWA-INV), en Español.
+
+La idea es hacer de esto nuestro laboratorio, y nutrir con ello nuestros respectivos
+portafolios, porque además tendremos el derecho de publicar y comentar todos los resultados
+de la investigación. Y además, por supuesto la posibilidad de ganar clientes que manden 
+a hacer sistemas personalizados para sus respectivas empresas, basados en éste.
+
+Te envío el programa en la versión más actualizada que poseo, tuve que hacer muchos cambios
+para llegar al estado actual, y todavía falta depurar.
+
+Las tareas básicamente serán tres:
+
+  1) Modificar el estilo visual general de la página, para que se parezca al del sitio
+     htdocs/trading que también te estoy adjuntando (leer el punto "Mapa general del sitio",
+     más adelante).
+
+  2) Generar la sección Entradas, que le falta al sistema original y la considero necesaria.
+     Esta sección su vez contiene dos subsecciones:
+
+     Entradas
+      |--> Administrar entradas
+      `--> Agregar entradas
+
+  3) Cambiar el diseño del menu sidebar izquierdo de la pagina principal (leer el punto 
+     respectivo más adelante).
+
+  NOTA [aplicable a todos los puntos]: Es buena práctica realizar una documentación adecuada
+  del código (hace falta), por lo tanto para cada función que agregues utiliza el estilo UML
+
+  /**
+   * @param {data_type} description
+   * @return return_value
+   */
+
+  etc., como está descrito en 
+
+  https://jsdoc.app/tags-param.html#names-types-and-descriptions
+
+  y que yo utilicé por ejemplo en libs/js/functions.js para la función _keyCode()
+
+  Este estilo de documentación es importante porque los generadores de ayuda automática miran 
+  estas líneas, y de allí producen un HELP automático incluso en formato HTML.
+
+
+B) Mapa general del sitio           |
+____________________________________|
+
+
+Esta información te puede resultar útil para entender donde está cada cosa según el diseño
+original del sitio, y ahorrar horas de búsqueda.
+
+	./includes  (librerías PHP)
+	   |
+	   +-- load.php     (macro fichero, llama a todos los demas. Adem'as, define las rutas base)
+	   +-- config.php   (configuraci'on de la base de datos, y el usuario de la misma)
+	   +-- session.php  (inicia una sesi'on de PHP, adem'as define clase Session(), y crea una instancia de 
+	                    la misma)
+	   +-- database.php (define una clase de base de datos, e inicia una instancia de la misma.
+	                    Sin embargo, las funciones de consulta no est'an en este fichero, sino en sql.php)
+	   +-- sql.php      (define las funciones para consultas sql)
+	   +-- upload.php   (carga de im'agenes, define una clase Media(), y un objeto de la misma que es usado
+	                    para todos los procesos de carga de im'agenes)
+
+	./layouts  (plantillas de documento -- no CSS !!)
+	   |
+	   +-- Son las plantillas (documentos PHP+HTML) para ser insertadas autom'aticamente en las diversas
+	       p'aginas del sitio. Ejemplo: header.php, footer.php, etc.
+	       Aqu'i es donde debes editar para cambiar el sidebar, por ejemplo.
+
+	       ** Hay una nota a este respecto que se explicar'a en un punto m'as adelante.
+
+	./libs  (otras librer'ias)
+	   |
+	   +-- css  Biblioteca CSS
+	        |
+	        +-- main.css  (AQU'I ES DONDE CAMBIARIAS EL ESTILO GENERAL DEL SITIO)
+	        +-- hay aqu'i otros ficheros para bootstrap y datepicker, donde estuve tratando
+	            de crear una libreria est'atica que acelere la carga de la p'agina.
+	            SI PUEDES COMPLETAR ESTA LIBRERIA CSS, ser'ia genial.
+
+	   +-- js   Biblioteca JS => jQuery
+	        |
+	        +-- functions.js  (funciones generales JS, como _keyCode() que ser'a usada en un futuro .... )
+	                          El autor original ten'ia aqu'i el jQuery, pero yo lo cambie a poduct_items.js
+	        +-- product_items.js  El jQuery para la autocompletaci'on (suggestion) de nombres de producto.
+	                              (esto fue creado nuevo por mi)
+	        +-- otras funciones de cache de JS (si puedes completar aqu'i lo que haga falta, genial ...)
+
+	./ajax  (biblioteca PHP para los m'etodos AJAX/jQuery)
+	    |
+	    +-- product_items.php
+
+	./uploads  (carpeta de im'agenes)
+	    |
+	    +-- users
+	    +-- products
+
+Esta es toda la descripci'on, ahora voy a pasar a explicar punto por punto de la tarea que tienes que
+desarrollar, y en qu'e carpetas espec'ificamente se encuentran los scripts/ficheros necesarios.
+
+
+C.) Estilos visuales (tarea A.1)      |
+______________________________________|
+
+Esto deber'ia lograrse f'acilmente con editando el ./libs/css/main.css, ya que es la biblioteca local.
+Los otros se cargan en l'inea (Bootstrap), pero pueden ser sobreescritos aqu'i.
+
+La idea es que se parezca al otro sitio htdocs/trading, incluyendo la apariencia del sidebar izquierdo.
+
+Tambi'en se podr'ia trabajar un poco el men'u superior derecho de "Admin User" (Perfil|Configuracion|Salir).
+Esto est'a definido en el layouts/header.php
+
+Volveremos a hablar del sidebar izquierdo en la tarea A.3
+
+
+C.) Desarrollar la secci'on de Entradas (tarea A.2)      |
+_________________________________________________________|
+
+Esta es la parte creo que program'aticamente m'as complicada, pues usa intensivamente el env'io de informaci'on
+por formularios, procesamiento PHP y jQuery.
+
+La idea es que se parezca a la secci'on de Salidas que he reparado completamente (no funcionaba bien), para que la
+uses como gu'ia. Como funcionaba el sistema originalmente, s'olo ten'ia la secci'on de Materiales (es decir el Stock)
+y las Salidas. Esto es orientado a un sistema de almacen, pero no a una tienda de compras/ventas.
+
+En un tienda real, debes tener el Stock, las Entradas/Compras y las Salidas/Ventas.
+
+- Todo producto, antes de salir, debe estar primero en el Stock, y adem'as tener existencia suficiente.
+  Adem'as, una vez hecha la venta, disminuye apropiadamente la cantidad en el inventario.
+- Al hacer la entrada, primero busca si ya est'a registrado en el Stock, si est'a, incrementa la cantidad
+  en el Stock. Si no existe, DEBE agregar el nuevo registro al Stock.
+
+Hay que entender tambi'en que una cosa es el registro del producto como tal, y otra es el registro de la Entrada.
+La entrada es una operaci'on, no un producto. Idealmente, el registro de Entrada lleva la siguiente informaci'on:
+____________________
+  | id:          el ID de la operaci'on, NO del producto
+  | product_id:  ID del producto asociado a la entrada, tal como est'a registrado 
+  |              en la tabla de productos
+  | qty:         cantidad de unidades compradas
+  | price:       precio individual de compra de cada producto (el total es qty*price)
+  | source:      el "origen" de la compra, o el PROVEEEDOR, si es para un sistema de tienda
+  | date:        fecha de la operaci'on
+
+Para ello ya se ha creado una tabla `incomes` con dichos campos, y la estructura de la misma, que 
+puedes verificar al ejecutar la sentencia {DESCRIBE `incomes`;} de MySql, es:
+
+  +------------+------------------+------+-----+---------+----------------+
+  | Field      | Type             | Null | Key | Default | Extra          |
+  +------------+------------------+------+-----+---------+----------------+
+  | id         | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+  | product_id | int(10) unsigned | YES  |     | NULL    |                |
+  | qty        | int(11)          | YES  |     | NULL    |                |
+  | price      | decimal(25,2)    | YES  |     | NULL    |                |
+  | source     | varchar(255)     | YES  |     | NULL    |                |
+  | date       | datetime         | YES  |     | NULL    |                |
+  +------------+------------------+------+-----+---------+----------------+
+
+Ahora vamos al sistema actual, a observar como es el funcionamiento de las Salidas, similar a lo
+que deber'ian ser las entradas. 
+
+Comienza con la busqueda de un producto, en el campo "Buscar por el nombre del producto". Nota que 
+al comenzar de escribir, se realiza una busqueda interactiva de los nombres similares, los cuales
+aparecen en la lista desplegable (usa jQuery). Si haces clic en uno de ellos, se rellena el campo 
+automaticamente (de nuevo, evento programado con jQuery).
+
+Luego, al pulsar el bot'on "B'usqueda", se completan los campos en la tabla de abajo, permitiendo
+editar todos los campos, excepto obviamente el nombre del producto.
+
+Una vez editados todos los campos, el bot'on "Registrar" registra la salida/venta (petici'on POST,
+procesada con PHP).
+
+Algo similar queremos para las Entradas, excepto que si el producto no existe, en lugar de rechazar
+la operaci'on, lo agrega autom'aticamente al inventario.
+
+Ahora, vamos a describir en detalle el flujo de trabajo de este proceso, para que te sirva de 
+referencia al hacer la secci'on de Entradas.
+
+(a) FLUJOGRAMA DE PROCESO: Control lista desplegable
+=====================================================
+
+Ficheros involucrados:
+ * /add_sale.php
+ * /libs/js/product_item.js
+ * /ajax/product_item.php
+
+            __________________________
+           |    P'agina principal     |
+           |  [fichero add_sale.php]  |
+           |__________________________|
+                        |
+   ________________________________________________                    
+  |  Objeto de formulario (input/autosuggestion)   |
+  |     <input id="sug_input" name="hint">         |     <-------------
+  |________________________________________________|                   |
+                        |                                              . 
+       _______________________________________                         |
+      |              jQuery                   |                        .
+      |            event keyup                |                        |
+      | [fichero: libs/js/product_items.js]   |                        .
+      |_______________________________________|                        |
+                        |                                              .
+       _______________________________________                         |
+      |            peticion POST              |                        .
+      |     destino: ajax/product_item.php    |                        |
+      |     product_name=<the input value>    |                        .
+      |_______________________________________|                        |
+                        |                                              .
+                        :                                              |
+                     REQUEST                                           .
+       _________________:_____________________                         |
+      |   script PHP procesa la petici'on     |                        .
+      |      (ejecutado por el servidor)      |                        |
+      |_______________________________________|                        .
+                        :                                              |
+                     RESPONSE                                          .
+       _________________:_____________________                         |
+      |      Contenido para poblar la         |  ______________________.
+      |           lista desplegable           |                        
+      |_______________________________________|
+
+
+En add_sale.php se puede ver que hay un control de formulario con el nombre e id adecuados
+[id="sug_input", name="hint"] para ser reconocido por el inspector de documento de jQuery.
+
+En product_items.js, se programa el evento keyup del input de formulario, para invocar
+una consulta POST, por cada pulsaci'on de tecla (PREGUNTA: no ser'ia mejor cambiar al evento
+change? ). La petici'on POST es enviada a ajax/product_item.php con el siguiente campo
+en el mensaje:
+
+    product_name = <clave introducida por el usuario>
+
+El script /ajax/product_item.php est'a programado para reconocer este campo en el mensaje, en 
+la l'inea
+
+    if ( isset($_POST['product_name']) && strlen($_POST['product_name']) )
+
+y devuelve con el contenido HTML para rellenar la lista desplegable (antes hace una consulta SQL,
+por medio de la l'inea "$products = find_product_by_title($_POST['product_name'])" ). 
+
+Es decir, que ni nosotros hacemos una consulta POST a la URL localhost/ajax/product_item.php, con 
+el mensaje:
+
+    product_name = hexa
+
+devolver'a textualmente el contenido:
+
+    <li id="product_list_item_1" class="list-group-item">Tornillo hexagonal 10mm x 50mm</li><li id="product_list_item_2" class="list-group-item">Tornillo hexagonal 8mm x 45mm</li><li id="product_list_item_3" class="list-group-item">Tornillo hexagonal 8mm x 60mm</li>
+
+que se usa para poblar la lista con el id="result" del formulario original en add_sale.php
+Esto se realiza en la linea
+
+    $('#result').html(data).fadeIn();
+
+del fichero product_item.js
+
+
+(b) FLUJOGRAMA DE PROCESO: Llenar los campos del registro encontrado
+    en la tabla inferior
+=====================================================================
+
+Si la b'usqueda anterior fue exitosa, al pulsar el bot'on "Busqueda" a la izquierda del campo
+de entrada, se agrega una fila a la tabla m'as abajo con todos los campos requeridos para hacer
+la venta. Esto tambi'en implementa una secuencia AJAX, la cual realiza una consulta al script
+ajax/product_item.php, pero esta vez con el campo
+
+    p_name = <nombre completo del producto>
+
+el cual a su vez es el valor recuperado de la consulta anterior. La fila incluye adem'as un bot'on
+<submit> que ser'a usado para enviar una petici'on al script add_sale.php para procesar la venta.
+
+
+Ficheros involucrados:
+ * /add_sale.php
+ * /libs/js/product_item.js
+ * /ajax/product_item.php
+
+            __________________________
+           |    P'agina principal     |
+           |  [fichero add_sale.php]  |     <------------------------- .
+           |__________________________|                                .
+                        |                                              |
+   ________________________________________________                    .
+  |             Boton de Formulario                |                   |
+  |              <form id="sug_form">              |                   .
+  |________________________________________________|                   |
+                        |                                              . 
+       _______________________________________                         |
+      |              jQuery                   |                        .
+      |            event submit               |                        |
+      |  [fichero: libs/js/product_items.js]s  |                        .
+      |_______________________________________|                        |
+                        |                                              .
+       _______________________________________                         |
+      |            peticion POST              |                        .
+      |     destino: ajax/product_item.php    |                        |
+      |    p_name = <the full product name>   |                        .
+      |_______________________________________|                        |
+                        |                                              .
+                        :                                              |
+                     REQUEST                                           .
+       _________________:_____________________                         |
+      |   script PHP procesa la petici'on     |                        .
+      |      (ejecutado por el servidor)      |                        |
+      |_______________________________________|                        .
+                        :                                              |
+                     RESPONSE                                          .
+       _________________:_____________________                         |
+      |      Contenido para rellenar          |  ______________________.
+      |    la tabla de completar venta        |                        
+      |_______________________________________|
+
+
+Los m'etodos AJAX involucrados son distintos, pero n'otese como se emplean los mismos scripts
+PHP y JS para ambos. La diferencia esta en que add_sale.php est'a programado para responder
+a distintas peticiones POST, dependiendo de la clave de mensaje (product_name, o p_name).
+
+
+D.) Mejorar el menu/sidebar izquierdo (tarea A.3)        |
+_________________________________________________________|
+
+En general, me gustar'ia que el sidebar tenga la apariencia lograda en el otro sitio "trading",
+con el efecto visual de "movimiento" al hacer hover sobre los elementos de men'u.
+
+Igualmente, en el sistema inventario actual, los submenus se despliegan solamente al hacer
+clic sobre el menu principal:
+
+layouts/admin_menu.php:
+
+    <a href="#" class="submenu-toggle">
+      <i class="glyphicon glyphicon-th-list"></i>
+       <span>Entradas</span>
+    </a>
+
+    <!-- Editado por Yoel (2020.05.27)
+       No aparec'ian los submenus 
+       Se cambio la clase "nav submenu" a "nav menu" 
+       .............................................. -->
+    <ul class="nav menu">
+    <!--<ul class="nav submenu">-->
+      <li><a href="">Administrar entradas</a></li>
+      <li><a href="">Agregar entradas</a> </li>
+    </ul>
+
+Idealmente, los submenus deberian ocultarse o desocultarse por medio del hover del raton,
+por lo tanto escribir en jQuery un manejador del evento hover de la clase "nav submenu", que
+muestre/oculte los elementos, quiz'a con un cierto tiempo de fadeIn/fadOut (habr'ia que mirar
+el resultado).
+
+DE HECHO, idealmente hay que hacer el menu responsivo a tres tipos de eventos:
+
+ - click
+ - focus
+ - hover
+
+donde el focus es en caso de que el usuario est'e usando el teclado en lugar el rat'on para 
+navegar por la p'agina, y visitando los elementos por medio del TAB.
+
+NOTA ADICIONAL: Si miras en layouts/header.php ver'as que insert'e rutas locales para los css's,
+tratando de acelerar la carga de la p'agina, mientras que en layouts/footer.php se encuentran
+los javascript respectivos. A'un no consigo el efecto necesario, pero si pudieras ayudar en esta 
+parte ser'ia genial. El objetivo es una p'agina user-friendly, y adecuadamente responsiva.
+
+El directorio cache es donde estoy guardando los ficheros temporales para luego poblar las
+librerias locales en libs/js y libs/css

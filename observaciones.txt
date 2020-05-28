@@ -1,0 +1,11 @@
+*Buenas tardes, done algo para obtener el sistema en español pero resulta que no están los apartados de entrada y salida para saber el stock de las sucursales, usted lo tiene como "ubicación"
+
+*No puedo subir ningún tipo de imagen me salta  error Debe tener permisos de escritura!!!. Tras darle permisos con chmod no consigo subir ninguna imagen.Ayuda
+
+*Hola, gracias por compartir, muy interesante. Quisiera dar mi comentario para poner mejorar este sistema, en la sección Entradas no pasa nada al dar clic en las dos opciones.
+
+*Hola amigo estoy editando el programa para lo que lo ocuparé y la parte de agregar productos está genial solo que no me deja agregar 🥺 podrías darme una mano ???
+
+*Hola te agradezco mucho el sistema esta genial, te cuento que lo he montado y  muy bien. solo tengo un detalle que no puedo soluconarlo al querer subir una imagen me dice "Debe tener permisos de escritura!!!.", ya le he dado los permisos pero me sigue apareciendo el mismo mensaje. si puedes darme una mano con eso te agradeceria. saludos cordiales
+
+*hola amigo, de verdad me dejo loco con la modificacion que le hizo de como la habia dejado OBED, de verdad me gusto y me gusta muchisimo, pero tengo un problemita... quisiera que me restara cantidad de producto en ventas como la tenia OBED y que me genere los precios de ventas diarias y mensuales como en el reporte... me podrias ayudar? 
