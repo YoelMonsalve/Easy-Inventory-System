@@ -35,11 +35,11 @@
               <form class="form-inline" action="media.php" method="POST" enctype="multipart/form-data">
               <div class="form-group">
                 <div class="input-group">
+                  <span> Seleccionar archivo </span>
                   <span class="input-group-btn">
                     <input type="file" name="file_upload" multiple="multiple" class="btn btn-primary btn-file"/>
-                 </span>
-
-                 <button type="submit" name="submit" class="btn btn-default">Subir</button>
+                  </span>
+                  <button type="submit" name="submit" class="btn btn-default">Subir</button>
                </div>
               </div>
              </form>
@@ -53,7 +53,7 @@
                   <th class="text-center">Imagen</th>
                   <th class="text-center">Descripción</th>
                   <th class="text-center" style="width: 20%;">Tipo</th>
-                  <th class="text-center" style="width: 50px;">Acciones</th>
+                  <th class="text-center" style="width: 10em;">Acciones</th>
                 </tr>
               </thead>
                 <tbody>
@@ -61,7 +61,7 @@
                 <tr class="list-inline">
                  <td class="text-center"><?php echo count_id();?></td>
                   <td class="text-center">
-                      <img src="uploads/products/<?php echo $media_file['file_name'];?>" class="img-thumbnail" />
+                      <img style="height: 6em; width: 6em;" src="uploads/products/<?php echo $media_file['file_name'];?>" class="img-thumbnail" />
                   </td>
                 <td class="text-center">
                   <?php echo $media_file['file_name'];?>

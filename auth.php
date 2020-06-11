@@ -12,7 +12,7 @@ if(empty($errors)){
      $session->login($user_id);
     //Update Sign in time
      updateLastLogIn($user_id);
-     $session->msg("s", "Bienvenido a INDEXA ALMACEN.");
+     $session->msg("s", "Bienvenido a BUSINESS ASSISTANT ___ By Yoel Monsalve, Junio 2020.");
      redirect('home.php',false);
 
   } else {

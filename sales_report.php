@@ -3,6 +3,9 @@ $page_title = 'Reporte de ventas';
   require_once('includes/load.php');
   // Checkin What level user has permission to view this page
    page_require_level(3);
+
+   echo date('Y-m-').'01';
+   //exit;
 ?>
 <?php include_once('layouts/header.php'); ?>
 <div class="row">
@@ -17,19 +20,24 @@ $page_title = 'Reporte de ventas';
 
       </div>
       <div class="panel-body">
-          <form class="clearfix" method="post" action="sale_report_process.php">
-            <div class="form-group">
-              <label class="form-label">Rango de fechas</label>
-                <div class="input-group">
-                  <input type="text" class="datepicker form-control" name="start-date" placeholder="From">
-                  <span class="input-group-addon"><i class="glyphicon glyphicon-menu-right"></i></span>
-                  <input type="text" class="datepicker form-control" name="end-date" placeholder="To">
-                </div>
-            </div>
-            <div class="form-group">
-                 <button type="submit" name="submit" class="btn btn-primary">Generar Reporte</button>
-            </div>
-          </form>
+        <form class="clearfix" method="post" action="sale_report_process.php">
+          <div class="form-group">
+            <label class="form-label">Rango de fechas</label>
+              <div class="input-group">
+                <!--<input type="text" class="form-control" id="date" name="date" placeholder="yyyy-mm-dd">-->
+                <input type="date" class="form-control datePicker" name="start-date" id="start-date" data-date data-date-format="yyyy-mm-dd" value="<?php echo date('Y-m-').'01'; ?>" >
+                
+                <!--<input type="text" class="datepicker form-control" name="start-date" placeholder="From">-->
+
+                <span class="input-group-addon"><i class="glyphicon glyphicon-menu-right"></i></span>
+                <!--<input type="text" class="datepicker form-control" name="end-date" placeholder="To">-->
+                <input type="date" class="form-control datePicker" name="end-date" id="end-date" data-date data-date-format="yyyy-mm-dd" value="<?php echo date('Y-m-d'); ?>" >
+              </div>
+          </div>
+          <div class="form-group">
+               <button type="submit" name="submit" class="btn btn-primary">Generar Reporte</button>
+          </div>
+        </form>
       </div>
 
     </div>

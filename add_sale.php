@@ -22,7 +22,7 @@
       $s_date    = make_date();
 
       $sql  = "INSERT INTO sales (";
-      $sql .= " product_id,qty,price,destination,date";
+      $sql .= " product_id,qty,sale_price,destination,date";
       $sql .= ") VALUES (";
       $sql .= "'{$p_id}','{$s_qty}','{$s_total}','{$dest}','{$s_date}'";
       $sql .= ")";
@@ -44,8 +44,7 @@
 ?>
 <?php include_once('layouts/header.php'); ?>
 
-<!-- This is the jQuery script to auto-suggestion of product names -->
-<script type="text/javascript" src="libs/js/product_item.js"></script>
+<!-- This is the jQuery script for auto-suggestion of product names -->
 
 <div class="row">
   <div class="col-md-6">
@@ -60,7 +59,7 @@
             <input type="text" id="sug_input" class="form-control" name="hint" placeholder="Buscar por el nombre del producto">
           </div>
 
-          <!-- NOTE: added style="cursor:pointer: -->
+          <!-- NOTE: Yoel added style="cursor:pointer: -->
           <div id="result" style="cursor:pointer" class="list-group"></div>
         </div>
     </form>
@@ -97,3 +96,5 @@
 </div>
 
 <?php include_once('layouts/footer.php'); ?>
+<!-- jQuery -->
+<script type="text/javascript" src="libs/js/product_item.js"></script>

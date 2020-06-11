@@ -2,7 +2,18 @@
   $page_title = 'Editar Grupo';
   require_once('includes/load.php');
   // Checking What level user has permission to view this page
-  page_require_level(1);
+  
+  // Dissabled in 
+  //page_require_level(1);
+?>
+
+<?php 
+  if( verb_mode() ) {
+    print( "GET params:\n" );
+    print_r( $_GET );
+    print( "POST params:\n" );
+    print_r( $_POST );
+  }
 ?>
 
 <?php
@@ -10,7 +21,7 @@
    * Allows to initialize the Userform with the current
    * data of the given group ID
    *
-   * NOTE: I added the condition isset() to check the ID
+   * NOTE: I added the condition isset() to check if the ID
    * is present in the request.
    */
   if ( isset( $_GET['id'] ) ) {
@@ -25,13 +36,17 @@
 <?php
   if(isset($_POST['update'])) 
   {
-    
+    if( verb_mode() ) print( "Processing POST\n" );
+
     $req_fields = array('group-name','group-level','group-status');
     //validate_fields($req_fields);
     
     if( validate_fields( $req_fields ) ) {
-      $name = remove_junk($db->escape($_POST['group-name']));
-      $level = remove_junk($db->escape($_POST['group-level']));
+
+      if( verb_mode() ) print( "Validating fields GOOD!\n" );
+
+      $name   = remove_junk($db->escape($_POST['group-name']));
+      $level  = remove_junk($db->escape($_POST['group-level']));
       $status = remove_junk($db->escape($_POST['group-status']));
 
       $query  = "UPDATE user_groups SET ";
@@ -39,7 +54,9 @@
       $query .= " WHERE ID='{$db->escape($e_group['id'])}'";
       $result = $db->query($query);
 
-      if( $result ) {
+      if( verb_mode() ) print( "QUERY: ".$query );
+
+      if($result) {
         if ( $db->affected_rows() === 1 ) {
           //sucess
           $session->msg('s',"Grupo se ha actualizado! ");
@@ -47,27 +64,31 @@
         else {
           $session->msg('i',"No se cambio informacion");
         }
-        //redirect('edit_group.php?id='.(int)$e_group['id'], false);
-        redirect('group.php', false);
+        if( verb_mode() ) print( "\nSucccess" );
+        
+        redirect('edit_group.php?id='.(int)$e_group['id'], false);
       }
       else {
         //failed
-        $session->msg('d','No se pudo actualizar el grupo!');
-
-        /* changed by yoel.- 2020.06.04 */
-        $session->msg('w',$db->get_last_error());
+        $session->msg('d','Lamentablemente no se ha actualizado el grupo!');
         
+        if( verb_mode() ) print( "\nFailed. La Base de Datos no proceso la operacion." );
+        
+        $sql_err_msg = Array( 'warning' => "".$db->get_last_error() );
+        print_r( $sql_err_msg );
+
         redirect('edit_group.php?id='.(int)$e_group['id'], false);
       }
     } 
     else {
       // error in form fields
       $session->msg("d", $errors);
+      if( verb_mode() ) print( "\nFailed. Problema en los campos del formulario." );
       redirect('edit_group.php?id='.(int)$e_group['id'], false);
     }
   }
+  exit();
 ?>
-
 <?php include_once('layouts/header.php'); ?>
 <div class="login-page">
     <div class="text-center">
@@ -91,7 +112,7 @@
               </select>
         </div>
         <div class="form-group clearfix">
-          <button type="submit" name="update" class="btn btn-info">Actualizar</button>
+                <button type="submit" name="update" class="btn btn-info">Actualizar</button>
         </div>
     </form>
 </div>

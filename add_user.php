@@ -39,7 +39,7 @@
 ?>
 <?php include_once('layouts/header.php'); ?>
   <?php echo display_msg($msg); ?>
-  <div class="row">
+  <div class="row col-md-6">
     <div class="panel panel-default">
       <div class="panel-heading">
         <strong>

@@ -140,7 +140,7 @@
       <div class="panel-heading">
         <strong>
           <span class="glyphicon glyphicon-th"></span>
-          <span>Materiales recientemente añadidos</span>
+          <span>Productos recientemente añadidos</span>
         </strong>
       </div>
       <div class="panel-body">
